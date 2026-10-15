@@ -1,0 +1,262 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Gallery</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #fff8ee;
+            color: #444;
+        }
+
+        header {
+            background: #b5651d;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        nav {
+            background: #713f12;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 15px;
+            font-weight: bold;
+        }
+
+        section {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .products {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            width: 220px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #d6c2aa;
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        button {
+            background: #b5651d;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #713f12;
+        }
+
+        input, select {
+            padding: 9px;
+            margin: 6px;
+            border: 1px solid #b5651d;
+            border-radius: 5px;
+        }
+
+        #result {
+            font-weight: bold;
+            color: #713f12;
+            margin-top: 15px;
+        }
+
+        footer {
+            background: #713f12;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .dark {
+            background: #241f1b;
+            color: white;
+        }
+
+        .dark .card {
+            background: #40352c;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Art Gallery</h1>
+    <p>Discover creativity, colors, and beautiful masterpieces!</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#products">Artworks</a>
+    <a href="#budget">Art Budget</a>
+    <a href="#tips">Art Tips</a>
+</nav>
+
+<section id="home">
+    <h2>Welcome to Our Art Gallery</h2>
+    <p>Explore beautiful paintings and bring creativity into your life.</p>
+    <button id="themeBtn">Change Theme</button>
+</section>
+
+<section id="products">
+    <h2>Our Art Collection</h2>
+
+    <div class="products">
+
+        <div class="card">
+            <img src="C:\Users\nicvn\Downloads\pics\Classic_painting.jpg"
+                 alt="Classic painting">
+            <h3>Classic Painting</h3>
+            <p>Price: ₹499</p>
+            <button class="details" data-name="Classic Painting"
+                    data-price="499">View Details</button>
+        </div>
+
+        <div class="card">
+            <img src="C:\Users\nicvn\Downloads\pics\Colorful_modern_artwork.jpeg"
+                 alt="Colorful modern artwork">
+            <h3>Modern Art</h3>
+            <p>Price: ₹699</p>
+            <button class="details" data-name="Modern Art"
+                    data-price="699">View Details</button>
+        </div>
+
+        <div class="card">
+            <img src="C:\Users\nicvn\Downloads\pics\Abstract_art.jpg"
+                 alt="Abstract art">
+            <h3>Abstract Painting</h3>
+            <p>Price: ₹399</p>
+            <button class="details" data-name="Abstract Painting"
+                    data-price="399">View Details</button>
+        </div>
+
+    </div>
+
+    <div id="productInfo"></div>
+</section>
+
+<section id="budget">
+    <h2>Art Budget Calculator</h2>
+    <p>Calculate the cost of purchasing your favorite artwork.</p>
+
+    <label for="amount">Enter Your Budget (₹):</label>
+    <input type="number" id="amount" min="0"
+           placeholder="Enter amount">
+
+    <br>
+
+    <label for="category">Choose Artwork:</label>
+    <select id="category">
+        <option value="499">Classic Painting - ₹499</option>
+        <option value="699">Modern Art - ₹699</option>
+        <option value="399">Abstract Painting - ₹399</option>
+    </select>
+
+    <br>
+
+    <button id="calculate">Calculate Balance</button>
+
+    <div id="result"></div>
+</section>
+
+<section id="tips">
+    <h2>Art Tips</h2>
+
+    <p class="tip">Choose artwork that matches your personal taste.</p>
+    <p class="tip">Keep paintings away from direct sunlight.</p>
+    <p class="tip">Use suitable frames to protect your artwork.</p>
+
+    <button id="hideTips">Hide Tips</button>
+    <button id="showTips">Show Tips</button>
+</section>
+
+<footer>
+    <p>&copy; 2026 Art Gallery | All Rights Reserved</p>
+</footer>
+
+<script>
+$(document).ready(function() {
+
+    // Change website theme
+    $("#themeBtn").click(function() {
+        $("body").toggleClass("dark");
+    });
+
+    // Display artwork details
+    $(".details").click(function() {
+        let name = $(this).data("name");
+        let price = $(this).data("price");
+
+        $("#productInfo").html(
+            "<h3>" + name + "</h3>" +
+            "<p>Artwork Price: ₹" + price + "</p>"
+        );
+    });
+
+    // Art budget calculation
+    $("#calculate").click(function() {
+        let amount = Number($("#amount").val());
+        let price = Number($("#category").val());
+
+        if ($("#amount").val() === "" || amount <= 0) {
+            alert("Please enter a valid budget!");
+        } else if (amount < price) {
+            alert("Your budget is insufficient for this artwork!");
+            $("#result").text("");
+        } else {
+            let balance = amount - price;
+
+            $("#result").html(
+                "Artwork Cost: ₹" + price +
+                "<br>Remaining Balance: ₹" + balance
+            );
+        }
+    });
+
+    // Hide art tips
+    $("#hideTips").click(function() {
+        $(".tip").hide();
+    });
+
+    // Show art tips
+    $("#showTips").click(function() {
+        $(".tip").show();
+    });
+
+});
+</script>
+
+</body>
+</html>
+```
